@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produits - KALY 🪡</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="images/logo.png" alt="KALY" onerror="this.style.display='none'">
+                <h1>KALY 🪡</h1>
+            </div>
+            
+            <nav class="nav">
+                <a href="index.html">Accueil</a>
+                <a href="products.html" class="active">Produits</a>
+                <a href="cart.html" class="cart-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="products-page">
+        <div class="container">
+            <div class="filters-section">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Rechercher un produit...">
+                </div>
+                
+                <div class="category-filters">
+                    <button class="filter-btn active" data-category="all">Tout</button>
+                    <button class="filter-btn" data-category="vetements">Vêtements</button>
+                    <button class="filter-btn" data-category="sacs">Sacs</button>
+                    <button class="filter-btn" data-category="chaussures">Chaussures</button>
+                    <button class="filter-btn" data-category="accessoires">Accessoires</button>
+                </div>
+            </div>
+
+            <div id="products-container" class="product-grid">
+                <!-- Products loaded by JS -->
+            </div>
+
+            <div id="loading" class="loading">
+                <i class="fas fa-spinner fa-spin"></i> Chargement...
+            </div>
+
+            <div id="no-products" class="no-products" style="display: none;">
+                <i class="fas fa-box-open"></i>
+                <p>Aucun produit trouvé</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>KALY 🪡</h3>
+                    <p>Vêtements et accessoires cousus avec passion</p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/ly.s_clothing_empire_?igsh=cnhoZm5jdWN3eXo1" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@kaly.125?_r=1&_t=ZM-91rjmu0hQJE" target="_blank">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                        <a href="https://wa.me/22379747424" target="_blank">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-phone"></i> +233 054 378 5331</p>
+                    <p><i class="fab fa-whatsapp"></i> +223 79 74 74 24</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 KALY. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/products.js"></script>
+</body>
+</html>

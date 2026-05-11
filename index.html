@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KALY 🪡 - Vêtements & Accessoires</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="images/logo.png" alt="KALY" onerror="this.style.display='none'">
+                <h1>KALY 🪡</h1>
+            </div>
+            
+            <nav class="nav">
+                <a href="index.html" class="active">Accueil</a>
+                <a href="products.html">Produits</a>
+                <a href="cart.html" class="cart-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Collection Exclusive</h2>
+            <p>Découvrez nos vêtements et accessoires cousus avec passion</p>
+            <a href="products.html" class="btn btn-primary">Voir la Collection</a>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories">
+        <div class="container">
+            <h2 class="section-title">Nos Catégories</h2>
+            <div class="category-grid">
+                <div class="category-card" onclick="location.href='products.html?category=vetements'">
+                    <i class="fas fa-tshirt"></i>
+                    <h3>Vêtements</h3>
+                </div>
+                <div class="category-card" onclick="location.href='products.html?category=sacs'">
+                    <i class="fas fa-bag-shopping"></i>
+                    <h3>Sacs</h3>
+                </div>
+                <div class="category-card" onclick="location.href='products.html?category=chaussures'">
+                    <i class="fas fa-shoe-prints"></i>
+                    <h3>Chaussures</h3>
+                </div>
+                <div class="category-card" onclick="location.href='products.html?category=accessoires'">
+                    <i class="fas fa-gem"></i>
+                    <h3>Accessoires</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured-products">
+        <div class="container">
+            <h2 class="section-title">Produits Vedettes</h2>
+            <div id="featured-grid" class="product-grid">
+                <!-- Products loaded by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Promo Banner -->
+    <section class="promo-banner">
+        <div class="container">
+            <h2>🎉 Profitez de nos Offres Spéciales</h2>
+            <p>Utilisez un code promo lors de votre commande sur WhatsApp</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>KALY 🪡</h3>
+                    <p>Vêtements et accessoires cousus avec passion</p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/ly.s_clothing_empire_?igsh=cnhoZm5jdWN3eXo1" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@kaly.125?_r=1&_t=ZM-91rjmu0hQJE" target="_blank">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                        <a href="https://wa.me/22379747424" target="_blank">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-phone"></i> +233 054 378 5331</p>
+                    <p><i class="fab fa-whatsapp"></i> +223 79 74 74 24</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Navigation</h3>
+                    <a href="index.html">Accueil</a>
+                    <a href="products.html">Produits</a>
+                    <a href="cart.html">Panier</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 KALY. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
