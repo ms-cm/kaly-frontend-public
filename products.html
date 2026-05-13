@@ -3,93 +3,309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produits - KALY 🪡</title>
+    <title>Collection - KALY 🪡</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --kaly-pink: #d946ef;
+            --kaly-dark: #0f172a;
+            --kaly-bg: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.8);
+        }
+
+        body { background-color: var(--kaly-bg); font-family: 'Inter', system-ui, sans-serif; }
+
+        /* --- Header & Hero --- */
+        .page-header {
+            padding: 4rem 0 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, #fdf4ff 0%, var(--kaly-bg) 100%);
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            color: var(--kaly-dark);
+        }
+
+        /* --- Filtres Flottants --- */
+        .filters-container {
+            position: sticky;
+            top: 80px;
+            z-index: 50;
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            padding: 1.5rem;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .search-wrapper { position: relative; }
+        .search-wrapper i {
+            position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+            color: var(--kaly-pink);
+        }
+        .search-wrapper input {
+            width: 100%; padding: 12px 12px 12px 45px;
+            border: 2px solid transparent; border-radius: 12px;
+            background: white; transition: 0.3s;
+        }
+        .search-wrapper input:focus { border-color: var(--kaly-pink); box-shadow: 0 0 0 4px rgba(217, 70, 239, 0.1); }
+
+        .custom-select {
+            padding: 12px; border-radius: 12px; border: none;
+            background: white; font-weight: 600; cursor: pointer;
+        }
+
+        /* --- Grille de Produits --- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .kaly-card {
+            background: white;
+            border-radius: 24px;
+            padding: 12px;
+            transition: all 0.4s ease;
+            position: relative;
+            border: 1px solid transparent;
+        }
+
+        .kaly-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--kaly-pink);
+            box-shadow: 0 20px 40px rgba(217, 70, 239, 0.1);
+        }
+
+        .img-container {
+            width: 100%;
+            height: 350px;
+            border-radius: 18px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .img-container img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .kaly-card:hover .img-container img { transform: scale(1.1); }
+
+        .badge-new {
+            position: absolute; top: 15px; left: 15px;
+            background: var(--kaly-pink); color: white;
+            padding: 5px 12px; border-radius: 10px;
+            font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
+        }
+
+        .card-body { padding: 1rem 0.5rem; }
+
+        .category-tag {
+            color: var(--kaly-pink); font-size: 0.8rem;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .product-name {
+            font-size: 1.25rem; font-weight: 700;
+            margin: 5px 0; color: var(--kaly-dark);
+        }
+
+        .price-tag {
+            font-size: 1.4rem; font-weight: 900; color: var(--kaly-dark);
+        }
+
+        /* --- Actions Fixées --- */
+        .card-footer {
+            display: flex; gap: 10px; margin-top: 15px;
+        }
+
+        .btn-buy {
+            flex-grow: 1;
+            background: var(--kaly-dark); color: white;
+            border: none; padding: 14px; border-radius: 14px;
+            font-weight: 700; cursor: pointer;
+            transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+
+        .btn-buy:hover { background: var(--kaly-pink); }
+
+        .btn-wish {
+            width: 50px; height: 50px; border-radius: 14px;
+            border: 2px solid #e2e8f0; background: transparent;
+            cursor: pointer; transition: 0.3s;
+        }
+
+        .btn-wish:hover { border-color: var(--kaly-pink); color: var(--kaly-pink); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .filter-grid { grid-template-columns: 1fr; }
+            .page-header h1 { font-size: 2rem; }
+            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .img-container { height: 220px; }
+            .btn-buy span { display: none; } /* On cache le texte sur petit mobile */
+        }
+    </style>
 </head>
 <body>
+
     <header class="header">
         <div class="container">
             <div class="logo">
                 <img src="images/logo.png" alt="KALY" onerror="this.style.display='none'">
                 <h1>KALY 🪡</h1>
             </div>
-            
             <nav class="nav">
                 <a href="index.html">Accueil</a>
-                <a href="products.html" class="active">Produits</a>
+                <a href="products.html" class="active">Collection</a>
                 <a href="cart.html" class="cart-link">
-                    <i class="fas fa-shopping-cart"></i>
+                    <i class="fas fa-shopping-bag"></i>
                     <span class="cart-count">0</span>
                 </a>
             </nav>
         </div>
     </header>
 
-    <div class="products-page">
+    <div class="page-header">
         <div class="container">
-            <div class="filters-section">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="search-input" placeholder="Rechercher un produit...">
-                </div>
-                
-                <div class="category-filters">
-                    <button class="filter-btn active" data-category="all">Tout</button>
-                    <button class="filter-btn" data-category="vetements">Vêtements</button>
-                    <button class="filter-btn" data-category="sacs">Sacs</button>
-                    <button class="filter-btn" data-category="chaussures">Chaussures</button>
-                    <button class="filter-btn" data-category="accessoires">Accessoires</button>
-                </div>
-            </div>
-
-            <div id="products-container" class="product-grid">
-                <!-- Products loaded by JS -->
-            </div>
-
-            <div id="loading" class="loading">
-                <i class="fas fa-spinner fa-spin"></i> Chargement...
-            </div>
-
-            <div id="no-products" class="no-products" style="display: none;">
-                <i class="fas fa-box-open"></i>
-                <p>Aucun produit trouvé</p>
-            </div>
+            <h1>L'Empire de la Mode ✨</h1>
+            <p>Pièces uniques cousues main par Boubacar Touré</p>
         </div>
     </div>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>KALY 🪡</h3>
-                    <p>Vêtements et accessoires cousus avec passion</p>
-                    <div class="social-links">
-                        <a href="https://www.instagram.com/ly.s_clothing_empire_?igsh=cnhoZm5jdWN3eXo1" target="_blank">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://www.tiktok.com/@kaly.125?_r=1&_t=ZM-91rjmu0hQJE" target="_blank">
-                            <i class="fab fa-tiktok"></i>
-                        </a>
-                        <a href="https://wa.me/22379747424" target="_blank">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
-                    </div>
+    <div class="container">
+        <div class="filters-container">
+            <div class="filter-grid">
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Que recherchez-vous aujourd'hui ?">
                 </div>
-                
-                <div class="footer-section">
-                    <h3>Contact</h3>
-                    <p><i class="fas fa-phone"></i> +233 054 378 5331</p>
-                    <p><i class="fab fa-whatsapp"></i> +223 79 74 74 24</p>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2024 KALY. Tous droits réservés.</p>
+                <select id="category-filter" class="custom-select" onchange="applyFilters()">
+                    <option value="all">Toutes les catégories</option>
+                    <option value="vetements">Vêtements</option>
+                    <option value="sacs">Sacs</option>
+                    <option value="accessoires">Accessoires</option>
+                </select>
+                <select id="sort-filter" class="custom-select" onchange="applyFilters()">
+                    <option value="newest">Nouveautés</option>
+                    <option value="price-asc">Prix croissant</option>
+                    <option value="price-desc">Prix décroissant</option>
+                </select>
             </div>
         </div>
-    </footer>
 
-    <script src="js/products.js"></script>
+        <div id="products-container" class="product-grid">
+            </div>
+
+        <div id="loading" style="text-align: center; padding: 5rem; display: none;">
+            <div class="fas fa-circle-notch fa-spin fa-3x" style="color: var(--kaly-pink);"></div>
+        </div>
+
+        <div id="no-products" style="display: none; text-align: center; padding: 5rem;">
+            <i class="fas fa-search fa-3x" style="color: #cbd5e1; margin-bottom: 1rem;"></i>
+            <p>Désolé, aucun modèle ne correspond à votre recherche.</p>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        const API_URL = 'https://kaly-backend.onrender.com/api';
+        let allProducts = [];
+        let filteredProducts = [];
+
+        async function loadProducts() {
+            const loader = document.getElementById('loading');
+            loader.style.display = 'block';
+            try {
+                const response = await fetch(`${API_URL}/products`);
+                allProducts = await response.json();
+                filteredProducts = [...allProducts];
+                applyFilters(); // Pour appliquer le tri par défaut
+            } catch (error) {
+                console.error("Erreur Backend:", error);
+            }
+            loader.style.display = 'none';
+        }
+
+        function displayProducts() {
+            const container = document.getElementById('products-container');
+            const noRes = document.getElementById('no-products');
+
+            if (filteredProducts.length === 0) {
+                container.innerHTML = '';
+                noRes.style.display = 'block';
+                return;
+            }
+
+            noRes.style.display = 'none';
+            container.innerHTML = filteredProducts.map(p => `
+                <div class="kaly-card">
+                    ${p.stock > 0 ? '<span class="badge-new">Disponible</span>' : ''}
+                    <div class="img-container" onclick="location.href='product-detail.html?id=${p._id}'" style="cursor:pointer">
+                        <img src="${p.images?.[0] || 'https://via.placeholder.com/400'}" alt="${p.name}">
+                    </div>
+                    <div class="card-body">
+                        <span class="category-tag">${p.category}</span>
+                        <h3 class="product-name">${p.name}</h3>
+                        <div class="price-tag">${p.price.toLocaleString()} FCFA</div>
+                        <div class="card-footer">
+                            <button onclick="addToCart('${p._id}')" class="btn-buy" ${p.stock === 0 ? 'disabled' : ''}>
+                                <i class="fas fa-shopping-bag"></i> <span>Ajouter</span>
+                            </button>
+                            <button class="btn-wish" onclick="toggleWishlist('${p._id}')">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function applyFilters() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const cat = document.getElementById('category-filter').value;
+            const sort = document.getElementById('sort-filter').value;
+
+            filteredProducts = allProducts.filter(p => {
+                const matchSearch = p.name.toLowerCase().includes(query);
+                const matchCat = cat === 'all' || p.category === cat;
+                return matchSearch && matchCat;
+            });
+
+            // Logique de tri
+            if (sort === 'price-asc') filteredProducts.sort((a,b) => a.price - b.price);
+            if (sort === 'price-desc') filteredProducts.sort((a,b) => b.price - a.price);
+            if (sort === 'newest') filteredProducts.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+            displayProducts();
+        }
+
+        document.getElementById('search-input').addEventListener('input', applyFilters);
+
+        function addToCart(id) {
+            if(window.addToCart) {
+                window.addToCart(id);
+                // Petit effet de vibration sur l'icône sac du header
+                document.querySelector('.cart-link').classList.add('bounce');
+                setTimeout(() => document.querySelector('.cart-link').classList.remove('bounce'), 500);
+            }
+        }
+
+        loadProducts();
+    </script>
+
 </body>
 </html>
