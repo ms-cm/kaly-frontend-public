@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - KALY 🪡</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #d946ef;
+            --dark: #0f172a;
+            --bg: #f8fafc;
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .auth-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .logo-auth {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            display: block;
+            text-decoration: none;
+        }
+
+        h2 { margin-bottom: 0.5rem; font-weight: 800; color: var(--dark); }
+        p { color: #64748b; margin-bottom: 2rem; font-size: 0.9rem; }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            box-sizing: border-box; /* Crucial pour éviter que ça dépasse */
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: white;
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 14px;
+            background: var(--dark);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 1rem;
+        }
+
+        .btn-register:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .footer-link {
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+        }
+
+        .footer-link a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-card">
+        <a href="index.html" class="logo-auth">KALY 🪡</a>
+        <h2>Créer un compte</h2>
+        <p>Rejoignez l'empire de la mode sur mesure.</p>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label>Nom complet</label>
+                <input type="text" id="regName" placeholder="Amadou Ly" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="regEmail" placeholder="exemple@mail.com" required>
+            </div>
+
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <input type="password" id="regPass" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn-register" id="submitBtn">Créer mon compte</button>
+        </form>
+
+        <div class="footer-link">
+            Déjà inscrit ? <a href="login.html">Connectez-vous ici</a>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://kaly-backend.onrender.com/api';
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = "Traitement...";
+            btn.disabled = true;
+
+            const userData = {
+                fullName: document.getElementById('regName').value,
+                email: document.getElementById('regEmail').value,
+                password: document.getElementById('regPass').value
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(userData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert("Compte KALY créé avec succès !");
+                    window.location.href = 'login.html';
+                } else {
+                    alert("Erreur : " + data.message);
+                    btn.innerText = "Créer mon compte";
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                console.error("Erreur serveur:", error);
+                alert("Le serveur ne répond pas. Vérifiez votre connexion.");
+                btn.innerText = "Créer mon compte";
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
