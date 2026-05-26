@@ -3,124 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - KALY 🪡</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Connexion - KALY</title>
     <style>
-        :root {
-            --primary: #0f172a;
-            --accent: #d946ef;
-        }
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            min-height: 100vh; 
-            background: #f1f5f9; 
-            margin: 0; 
-        }
-        .auth-card { 
-            background: white; 
-            padding: 2.5rem; 
-            border-radius: 24px; 
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); 
-            width: 100%; 
-            max-width: 400px; 
-            text-align: center; 
-        }
-        h2 { color: var(--primary); margin-bottom: 1.5rem; font-size: 1.8rem; }
-        .form-group { text-align: left; margin-bottom: 1.2rem; }
-        label { display: block; margin-bottom: 0.5rem; color: #64748b; font-size: 0.9rem; }
-        input { 
-            width: 100%; 
-            padding: 12px; 
-            border: 2px solid #e2e8f0; 
-            border-radius: 12px; 
-            box-sizing: border-box; 
-            transition: border-color 0.3s;
-        }
-        input:focus { border-color: var(--accent); outline: none; }
-        button { 
-            width: 100%; 
-            padding: 14px; 
-            background: var(--primary); 
-            color: white; 
-            border: none; 
-            border-radius: 12px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            font-size: 1rem;
-            transition: transform 0.2s;
-        }
-        button:active { transform: scale(0.98); }
-        .switch-link { margin-top: 1.5rem; color: #64748b; font-size: 0.9rem; }
-        .switch-link a { color: var(--accent); text-decoration: none; font-weight: bold; }
+        body { font-family: sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #f1f5f9; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 90%; max-width: 380px; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #0f172a; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .error { color: #ef4444; font-size: 0.8rem; margin-top: 10px; display: none; }
     </style>
 </head>
 <body>
-    <div class="auth-card">
-        <h2>Bon retour !</h2>
-        <p style="color: #64748b; margin-bottom: 2rem;">Connectez-vous à votre compte KALY</p>
-        
+    <div class="card">
+        <h2>Bon retour chez KALY</h2>
         <form id="loginForm">
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="email" placeholder="votre@email.com" required>
-            </div>
-            <div class="form-group">
-                <label>Mot de passe</label>
-                <input type="password" id="password" placeholder="••••••••" required>
-            </div>
-            <button type="submit" id="loginBtn">Se connecter</button>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Mot de passe" required>
+            <button type="submit" id="btn">Se connecter</button>
+            <div id="errorMsg" class="error"></div>
         </form>
-
-        <div class="switch-link">
-            Nouveau chez nous ? <a href="register.html">Créer un compte</a>
-        </div>
     </div>
 
     <script>
-        const loginForm = document.getElementById('loginForm');
-        const loginBtn = document.getElementById('loginBtn');
-
-        loginForm.addEventListener('submit', async (e) => {
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            loginBtn.innerText = "Vérification...";
-            loginBtn.disabled = true;
+            const btn = document.getElementById('btn');
+            const errorMsg = document.getElementById('errorMsg');
+            
+            btn.disabled = true;
+            btn.innerText = "Chargement...";
+            errorMsg.style.display = "none";
 
-            const credentials = {
+            const payload = {
                 email: document.getElementById('email').value,
                 password: document.getElementById('password').value
             };
 
             try {
-                // IMPORTANT : On contacte ton backend Render
-                const response = await fetch('https://kaly-backend.onrender.com/api/auth/login', {
+                const res = await fetch('https://kaly-backend.onrender.com/api/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(credentials)
+                    body: JSON.stringify(payload)
                 });
 
-                const data = await response.json();
+                const data = await res.json();
 
-                if (response.ok) {
-                    // On enregistre les infos de l'utilisateur dans le téléphone/PC
+                if (res.ok) {
                     localStorage.setItem('userKaly', JSON.stringify(data.user));
-                    alert("Connexion réussie ! Bienvenue " + data.user.fullName);
-                    window.location.href = 'index.html'; // Redirection vers l'accueil
+                    alert("Heureux de vous revoir !");
+                    window.location.href = 'index.html';
                 } else {
-                    alert(data.error || "Identifiants incorrects");
-                    loginBtn.innerText = "Se connecter";
-                    loginBtn.disabled = false;
+                    errorMsg.innerText = data.error || "Erreur de connexion";
+                    errorMsg.style.display = "block";
                 }
-            } catch (error) {
-                console.error("Erreur:", error);
-                alert("Impossible de contacter le serveur. Vérifie ta connexion.");
-                loginBtn.innerText = "Se connecter";
-                loginBtn.disabled = false;
+            } catch (err) {
+                errorMsg.innerText = "Le serveur ne répond pas. Vérifie ton backend.";
+                errorMsg.style.display = "block";
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Connecter";
             }
         });
     </script>
 </body>
 </html>
-
