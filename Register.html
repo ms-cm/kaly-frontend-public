@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Créer un compte - KALY</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .auth-container {
+            max-width: 400px;
+            margin: 5rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
+        .form-group input {
+            width: 100%; padding: 12px;
+            border: 1px solid #e2e8f0; border-radius: 12px;
+        }
+        .btn-auth {
+            width: 100%; padding: 14px;
+            background: #d946ef; color: white;
+            border: none; border-radius: 12px;
+            font-weight: 700; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <h2>Rejoindre l'Empire KALY 🪡</h2>
+        <form id="registerForm">
+            <div class="form-group">
+                <label>Nom complet</label>
+                <input type="text" id="regName" required>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="regEmail" required>
+            </div>
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <input type="password" id="regPass" required>
+            </div>
+            <button type="submit" class="btn-auth">Créer mon compte</button>
+        </form>
+        <p style="text-align:center; margin-top:1rem;">
+            Déjà client ? <a href="login.html">Se connecter</a>
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const userData = {
+                fullName: document.getElementById('regName').value,
+                email: document.getElementById('regEmail').value,
+                password: document.getElementById('regPass').value
+            };
+
+            try {
+                const res = await fetch('https://kaly-backend.onrender.com/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(userData)
+                });
+                
+                if(res.ok) {
+                    alert("Compte créé ! Connectez-vous.");
+                    window.location.href = 'login.html';
+                } else {
+                    alert("Erreur lors de l'inscription");
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        });
+    </script>
+</body>
+</html>
