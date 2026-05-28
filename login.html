@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>Connexion — KALY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --rose:      #e8a0b0;
+      --rose-deep: #c9687e;
+      --gold:      #c9a84c;
+      --dark:      #1a1218;
+      --mid:       #2e2129;
+      --soft:      #f7f1f3;
+      --muted:     #8a717a;
+      --white:     #ffffff;
+    }
+    html, body { height: 100%; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--dark);
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 20px;
+      position: relative; overflow: hidden;
+    }
+
+    /* background blobs */
+    body::before {
+      content:''; position:fixed;
+      width:600px; height:600px;
+      background: radial-gradient(circle, rgba(201,104,126,.18) 0%, transparent 70%);
+      top:-150px; right:-150px; pointer-events:none;
+    }
+    body::after {
+      content:''; position:fixed;
+      width:500px; height:500px;
+      background: radial-gradient(circle, rgba(201,168,76,.12) 0%, transparent 70%);
+      bottom:-150px; left:-150px; pointer-events:none;
+    }
+
+    .card {
+      width: 100%; max-width: 420px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 24px; padding: 40px 36px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      position: relative; z-index: 1;
+      animation: cardIn .5s ease both;
+    }
+    @keyframes cardIn {
+      from { opacity:0; transform:translateY(24px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* Back link */
+    .back-link {
+      display:inline-flex; align-items:center; gap:7px;
+      color: rgba(255,255,255,.45); font-size:.82rem; text-decoration:none;
+      margin-bottom: 28px; transition: color .2s;
+    }
+    .back-link:hover { color: var(--rose); }
+
+    /* Logo */
+    .auth-logo {
+      display:flex; align-items:center; gap:10px; margin-bottom:32px;
+      text-decoration: none;
+    }
+    .auth-logo-icon {
+      width:40px; height:40px; border-radius:12px;
+      background: linear-gradient(135deg, var(--rose-deep), var(--gold));
+      display:flex; align-items:center; justify-content:center;
+      font-size:20px;
+    }
+    .auth-logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size:1.6rem; font-weight:700; color:var(--white);
+    }
+    .auth-logo-text span { color:var(--gold); }
+
+    /* Headings */
+    .auth-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size:1.9rem; font-weight:700; color:var(--white);
+      margin-bottom:6px; line-height:1.1;
+    }
+    .auth-sub { color: rgba(255,255,255,.45); font-size:.88rem; margin-bottom:32px; }
+
+    /* Form */
+    .field { margin-bottom:18px; }
+    .field label {
+      display:block; font-size:.8rem; font-weight:600;
+      color: rgba(255,255,255,.6); margin-bottom:8px; letter-spacing:.03em;
+    }
+    .input-wrap { position:relative; }
+    .input-wrap i {
+      position:absolute; left:14px; top:50%; transform:translateY(-50%);
+      color: rgba(255,255,255,.25); font-size:.9rem; pointer-events:none;
+    }
+    .input-wrap input {
+      width:100%; padding: 13px 14px 13px 40px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius:12px; color:var(--white); font-size:.93rem;
+      font-family:'DM Sans', sans-serif;
+      transition: border-color .2s, background .2s;
+    }
+    .input-wrap input::placeholder { color: rgba(255,255,255,.25); }
+    .input-wrap input:focus {
+      outline:none;
+      border-color: var(--rose);
+      background: rgba(255,255,255,.1);
+    }
+    /* password toggle */
+    .eye-btn {
+      position:absolute; right:14px; top:50%; transform:translateY(-50%);
+      background:none; border:none; color:rgba(255,255,255,.3);
+      cursor:pointer; font-size:.9rem; padding:4px;
+      transition: color .2s;
+    }
+    .eye-btn:hover { color: var(--rose); }
+
+    /* Error */
+    .error-msg {
+      display:none; align-items:center; gap:8px;
+      background: rgba(248,113,113,.12); border:1px solid rgba(248,113,113,.25);
+      border-radius:10px; padding:11px 14px;
+      color:#fca5a5; font-size:.84rem; margin-bottom:18px;
+    }
+    .error-msg.show { display:flex; }
+
+    /* Submit btn */
+    .btn-submit {
+      width:100%; padding:14px;
+      background: linear-gradient(135deg, var(--rose-deep), var(--gold));
+      color:var(--white); border:none; border-radius:12px;
+      font-size:.95rem; font-weight:700; font-family:'DM Sans',sans-serif;
+      cursor:pointer; transition: opacity .2s, transform .2s;
+      display:flex; align-items:center; justify-content:center; gap:8px;
+      margin-top:8px;
+    }
+    .btn-submit:hover:not(:disabled) { opacity:.88; transform:translateY(-1px); }
+    .btn-submit:disabled { opacity:.5; cursor:not-allowed; }
+
+    /* Spinner */
+    .spinner {
+      width:16px; height:16px; border:2px solid rgba(255,255,255,.3);
+      border-top-color:white; border-radius:50%;
+      animation: spin .7s linear infinite; display:none;
+    }
+    .btn-submit.loading .spinner { display:block; }
+    .btn-submit.loading .btn-label { display:none; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    /* Footer link */
+    .auth-footer {
+      text-align:center; margin-top:24px;
+      color: rgba(255,255,255,.35); font-size:.84rem;
+    }
+    .auth-footer a { color:var(--rose); font-weight:600; text-decoration:none; }
+    .auth-footer a:hover { color:var(--rose-deep); }
+
+    /* Divider */
+    .divider {
+      display:flex; align-items:center; gap:12px; margin:22px 0;
+    }
+    .divider::before, .divider::after {
+      content:''; flex:1; height:1px; background:rgba(255,255,255,.1);
+    }
+    .divider span { color:rgba(255,255,255,.25); font-size:.78rem; white-space:nowrap; }
+
+    /* Social login (WhatsApp shortcut) */
+    .wa-btn {
+      width:100%; padding:13px;
+      background:rgba(37,211,102,.12); border:1px solid rgba(37,211,102,.25);
+      color:#86efac; border-radius:12px; font-size:.88rem; font-weight:600;
+      cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
+      text-decoration:none; transition: background .2s;
+    }
+    .wa-btn:hover { background:rgba(37,211,102,.2); }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Retour à l'accueil</a>
+
+  <a href="index.html" class="auth-logo">
+    <div class="auth-logo-icon">🪡</div>
+    <span class="auth-logo-text">KALY<span>.</span></span>
+  </a>
+
+  <h1 class="auth-title">Bon retour 👋</h1>
+  <p class="auth-sub">Connectez-vous pour accéder à votre compte</p>
+
+  <div class="error-msg" id="errorMsg">
+    <i class="fas fa-exclamation-circle"></i>
+    <span id="errorText">Erreur de connexion</span>
+  </div>
+
+  <div class="field">
+    <label>Adresse email</label>
+    <div class="input-wrap">
+      <i class="fas fa-envelope"></i>
+      <input type="email" id="email" placeholder="exemple@mail.com" required autocomplete="email"/>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Mot de passe</label>
+    <div class="input-wrap">
+      <i class="fas fa-lock"></i>
+      <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password" id="passInput"/>
+      <button class="eye-btn" type="button" id="eyeBtn" tabindex="-1">
+        <i class="fas fa-eye" id="eyeIcon"></i>
+      </button>
+    </div>
+  </div>
+
+  <button class="btn-submit" id="submitBtn">
+    <div class="spinner"></div>
+    <span class="btn-label">Se connecter</span>
+  </button>
+
+  <div class="divider"><span>ou</span></div>
+
+  <a href="https://wa.me/22379747424" target="_blank" class="wa-btn">
+    <i class="fab fa-whatsapp" style="font-size:1.1rem"></i>
+    Commander sans compte via WhatsApp
+  </a>
+
+  <div class="auth-footer">
+    Pas encore de compte ? <a href="register.html">S'inscrire gratuitement</a>
+  </div>
+</div>
+
+<script>
+const API_URL = 'https://kaly-backend.onrender.com/api';
+
+/* Password toggle */
+document.getElementById('eyeBtn').addEventListener('click', () => {
+  const input = document.getElementById('password');
+  const icon  = document.getElementById('eyeIcon');
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.className = 'fas fa-eye-slash';
+  } else {
+    input.type = 'password';
+    icon.className = 'fas fa-eye';
+  }
+});
+
+/* Login form */
+document.getElementById('submitBtn').addEventListener('click', async () => {
+  const btn      = document.getElementById('submitBtn');
+  const errorDiv = document.getElementById('errorMsg');
+  const errorTxt = document.getElementById('errorText');
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  if (!email || !password) {
+    errorTxt.textContent = 'Veuillez remplir tous les champs.';
+    errorDiv.classList.add('show'); return;
+  }
+
+  btn.disabled = true;
+  btn.classList.add('loading');
+  errorDiv.classList.remove('show');
+
+  try {
+    const res  = await fetch(`${API_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+
+    if (res.ok) {
+      /* ── Sauvegarde standardisée ── */
+      localStorage.setItem('kaly_user',  JSON.stringify(data.user  || data));
+      localStorage.setItem('kaly_token', data.token || '');
+      /* Redirection */
+      const redirect = new URLSearchParams(location.search).get('redirect') || 'index.html';
+      window.location.href = redirect;
+    } else {
+      errorTxt.textContent = data.error || data.message || 'Email ou mot de passe incorrect.';
+      errorDiv.classList.add('show');
+    }
+  } catch {
+    errorTxt.textContent = 'Le serveur ne répond pas. Vérifiez votre connexion.';
+    errorDiv.classList.add('show');
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove('loading');
+  }
+});
+
+/* Enter key */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('submitBtn').click();
+});
+</script>
+</body>
+</html>

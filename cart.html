@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panier - KALY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--rose:#e8a0b0;--rose-deep:#c9687e;--gold:#c9a84c;--dark:#1a1218;--mid:#2e2129;--soft:#f7f1f3;--muted:#8a717a;--white:#fff;--green:#25D366;--radius:14px;--hh:64px}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--soft);color:var(--dark);overflow-x:hidden}
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--rose-deep);border-radius:99px}
+    .header{position:sticky;top:0;z-index:200;height:var(--hh);background:rgba(26,18,24,0.97);border-bottom:1px solid rgba(255,255,255,0.06)}
+    .header-inner{max-width:1200px;margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
+    .logo{display:flex;align-items:center;gap:9px;text-decoration:none}
+    .logo-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--rose-deep),var(--gold));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+    .logo-text{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:700;color:#fff;letter-spacing:.04em}
+    .logo-text span{color:var(--gold)}
+    .nav-links{display:flex;align-items:center;gap:24px}
+    .nav-links a{color:rgba(255,255,255,.7);text-decoration:none;font-size:.88rem;font-weight:500;transition:color .2s}
+    .nav-links a:hover,.nav-links a.active{color:#fff}
+    .cart-btn{position:relative;color:#fff;text-decoration:none;font-size:1.1rem;padding:6px 10px}
+    .cart-count{position:absolute;top:0;right:0;background:var(--rose-deep);color:#fff;font-size:.62rem;font-weight:700;width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+    .auth-area{display:flex;align-items:center;gap:8px}
+    .btn-login{padding:7px 16px;border:1.5px solid rgba(255,255,255,.3);background:transparent;color:#fff;border-radius:8px;font-size:.84rem;font-weight:500;cursor:pointer;text-decoration:none}
+    .btn-signup{padding:7px 16px;background:linear-gradient(135deg,var(--rose-deep),var(--gold));color:#fff;border:none;border-radius:8px;font-size:.84rem;font-weight:600;cursor:pointer;text-decoration:none}
+    .user-menu{position:relative}
+    .user-trigger{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:99px;padding:5px 14px 5px 6px;cursor:pointer}
+    .user-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--rose-deep),var(--gold));display:flex;align-items:center;justify-content:center;color:#fff;font-size:.78rem;font-weight:700}
+    .user-name{color:#fff;font-size:.84rem;font-weight:500;max-width:90px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+    .user-dropdown{display:none;position:absolute;top:calc(100% + 10px);right:0;background:var(--mid);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);padding:8px;min-width:190px;box-shadow:0 20px 40px rgba(0,0,0,.4);z-index:300}
+    .user-dropdown.open{display:block;animation:dropIn .18s ease}
+    @keyframes dropIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+    .dd-header{padding:10px 12px 12px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:6px}
+    .dd-greet{color:rgba(255,255,255,.5);font-size:.75rem;margin-bottom:2px}.dd-name{color:#fff;font-weight:600;font-size:.9rem}
+    .dd-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:rgba(255,255,255,.75);font-size:.85rem;text-decoration:none;cursor:pointer;border:none;background:none;width:100%;transition:background .15s;font-family:'DM Sans',sans-serif}
+    .dd-item:hover{background:rgba(255,255,255,.07);color:#fff}.dd-item i{width:16px;color:var(--rose)}
+    .dd-item.logout{color:#f87171}.dd-item.logout i{color:#f87171}.dd-item.logout:hover{background:rgba(248,113,113,.1)}
+    .dd-divider{height:1px;background:rgba(255,255,255,.07);margin:6px 0}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
+    .hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px}
+    .mobile-cart{display:none;position:relative;color:#fff;text-decoration:none;font-size:1.15rem}
+    .mob-nav{display:none;position:fixed;inset:0;z-index:190}.mob-nav.open{display:block}
+    .mob-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.6)}
+    .mob-drawer{position:absolute;top:0;right:0;width:min(310px,85vw);height:100%;background:var(--dark);padding:80px 24px 32px;display:flex;flex-direction:column;gap:6px;overflow-y:auto;animation:slideL .25s ease}
+    @keyframes slideL{from{transform:translateX(100%)}to{transform:translateX(0)}}
+    .mob-drawer a,.mob-drawer button{display:flex;align-items:center;gap:14px;padding:13px 16px;border-radius:10px;color:rgba(255,255,255,.8);font-size:.95rem;font-weight:500;text-decoration:none;cursor:pointer;border:none;background:none;width:100%;transition:background .15s;font-family:'DM Sans',sans-serif}
+    .mob-drawer a i,.mob-drawer button i{width:20px;text-align:center;color:var(--rose)}
+    .mob-drawer a:hover,.mob-drawer button:hover{background:rgba(255,255,255,.06);color:#fff}
+    .mob-divider{height:1px;background:rgba(255,255,255,.07);margin:10px 0}
+    .mob-user-card{display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,.05);border-radius:12px;margin-bottom:8px}
+    .mob-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--rose-deep),var(--gold));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.9rem;flex-shrink:0}
+    .mob-uname{color:#fff;font-weight:600;font-size:.95rem}.mob-uemail{color:rgba(255,255,255,.4);font-size:.75rem}
+    .mob-auth{display:flex;gap:10px;padding:4px 0 12px}
+    .mob-auth a{flex:1;justify-content:center;padding:12px;border-radius:10px;font-size:.9rem;font-weight:600}
+    .mob-login{background:rgba(255,255,255,.07);color:#fff}.mob-register{background:linear-gradient(135deg,var(--rose-deep),var(--gold));color:#fff}
+    /* PAGE HERO */
+    .page-hero{background:linear-gradient(135deg,var(--dark) 0%,var(--mid) 100%);padding:36px 20px;position:relative;overflow:hidden}
+    .page-hero::before{content:'';position:absolute;width:400px;height:400px;background:radial-gradient(circle,rgba(201,104,126,.2) 0%,transparent 70%);top:-100px;right:-100px;pointer-events:none}
+    .page-hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1}
+    .page-eyebrow{color:var(--gold);font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:6px}
+    .page-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.4rem);font-weight:700;color:#fff}
+    /* CART */
+    .cart-section{padding:32px 20px 64px;max-width:1200px;margin:0 auto}
+    .cart-layout{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start}
+    .cart-items{display:flex;flex-direction:column;gap:16px}
+    .cart-item{background:#fff;border-radius:var(--radius);padding:16px;display:flex;gap:16px;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.05)}
+    .cart-item-img{width:80px;height:80px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--soft)}
+    .cart-item-info{flex:1;min-width:0}
+    .cart-item-name{font-weight:600;font-size:.95rem;color:var(--dark);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .cart-item-price{color:var(--rose-deep);font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700}
+    .qty-row{display:flex;align-items:center;gap:8px;margin-top:10px}
+    .qty-btn{width:28px;height:28px;border-radius:8px;border:1.5px solid rgba(0,0,0,.12);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;color:var(--dark);transition:all .2s;font-family:'DM Sans',sans-serif}
+    .qty-btn:hover{background:var(--dark);color:#fff;border-color:var(--dark)}
+    .qty-num{font-weight:700;font-size:.95rem;min-width:20px;text-align:center}
+    .remove-btn{background:none;border:none;color:#ef4444;cursor:pointer;font-size:1rem;padding:6px;border-radius:8px;transition:background .2s;flex-shrink:0}
+    .remove-btn:hover{background:rgba(239,68,68,.1)}
+    /* SUMMARY */
+    .cart-summary{background:#fff;border-radius:var(--radius);padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.05);position:sticky;top:calc(var(--hh) + 20px)}
+    .summary-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;margin-bottom:20px}
+    .summary-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:.9rem;color:var(--muted)}
+    .summary-row.total{border-top:2px solid rgba(0,0,0,.08);margin-top:8px;padding-top:14px;font-size:1.1rem;font-weight:700;color:var(--dark)}
+    .summary-row.total span:last-child{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--rose-deep)}
+    .discount-row{color:var(--green)}
+    /* PROMO */
+    .promo-wrap{margin:20px 0}
+    .promo-label{font-size:.82rem;font-weight:600;color:var(--dark);margin-bottom:8px;display:block}
+    .promo-input-row{display:flex;gap:8px}
+    .promo-input-row input{flex:1;padding:10px 14px;border:1.5px solid rgba(0,0,0,.1);border-radius:10px;font-size:.88rem;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
+    .promo-input-row input:focus{border-color:var(--rose-deep)}
+    .promo-btn{padding:10px 16px;background:var(--dark);color:#fff;border:none;border-radius:10px;font-size:.85rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:background .2s}
+    .promo-btn:hover{background:var(--rose-deep)}
+    .promo-msg{font-size:.8rem;margin-top:6px}
+    .promo-msg.ok{color:#10b981}.promo-msg.err{color:#ef4444}
+    /* BUTTONS */
+    .btn-wa{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:15px;background:var(--green);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:none;transition:transform .2s,box-shadow .2s;margin-top:16px}
+    .btn-wa:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(37,211,102,.35)}
+    .btn-continue{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;background:transparent;border:1.5px solid rgba(0,0,0,.12);border-radius:12px;font-size:.9rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--dark);text-decoration:none;margin-top:10px;transition:border-color .2s}
+    .btn-continue:hover{border-color:var(--rose-deep);color:var(--rose-deep)}
+    /* EMPTY */
+    .empty-cart{text-align:center;padding:80px 20px;background:#fff;border-radius:var(--radius)}
+    .empty-cart-icon{font-size:4rem;margin-bottom:16px;opacity:.2;display:block}
+    .empty-cart h2{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;margin-bottom:8px}
+    .empty-cart p{color:var(--muted);margin-bottom:24px}
+    .btn-shop{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:linear-gradient(135deg,var(--rose-deep),var(--gold));color:#fff;border:none;border-radius:10px;font-size:.95rem;font-weight:600;cursor:pointer;text-decoration:none;transition:opacity .2s}
+    .btn-shop:hover{opacity:.88}
+    /* TOAST */
+    .toast{position:fixed;bottom:24px;right:20px;display:flex;align-items:center;gap:10px;padding:14px 20px;border-radius:12px;color:#fff;font-size:.88rem;font-weight:500;box-shadow:0 12px 30px rgba(0,0,0,.25);z-index:9999;animation:toastIn .3s ease}
+    .toast.success{background:#10b981}.toast.error{background:#ef4444}
+    @keyframes toastIn{from{opacity:0;transform:translateY(14px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+    /* FOOTER */
+    .footer{background:var(--dark);color:#fff;padding:48px 20px 24px}
+    .footer-grid{max-width:1200px;margin:0 auto 32px;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:36px}
+    .footer-brand p{color:rgba(255,255,255,.5);font-size:.85rem;line-height:1.7;margin-bottom:18px}
+    .social-row{display:flex;gap:10px}
+    .social-btn{width:36px;height:36px;border-radius:9px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;font-size:.9rem;text-decoration:none;transition:background .2s}
+    .social-btn:hover{background:var(--rose-deep);color:#fff}
+    .footer-col h4{color:#fff;font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;opacity:.45}
+    .footer-col a,.footer-col p{display:block;color:rgba(255,255,255,.55);font-size:.87rem;text-decoration:none;margin-bottom:9px;transition:color .2s}
+    .footer-col a:hover{color:#fff}
+    .footer-bottom{max-width:1200px;margin:0 auto;border-top:1px solid rgba(255,255,255,.07);padding-top:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+    .footer-bottom p{color:rgba(255,255,255,.3);font-size:.8rem}
+    @media(max-width:900px){.nav-links{display:none}.auth-area{display:none}.hamburger{display:flex}.mobile-cart{display:block}.cart-layout{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr;gap:24px}}
+    @media(max-width:600px){.cart-section{padding:20px 16px 48px}.cart-summary{position:static}.footer-grid{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo"><div class="logo-icon">&#x1FAA1;</div><span class="logo-text">KALY<span>.</span></span></a>
+    <nav class="nav-links">
+      <a href="index.html">Accueil</a>
+      <a href="products.html">Produits</a>
+      <a href="cart.html" class="cart-btn active"><i class="fas fa-shopping-bag"></i><span class="cart-count">0</span></a>
+    </nav>
+    <div class="auth-area" id="auth-area"></div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <a href="cart.html" class="mobile-cart"><i class="fas fa-shopping-bag"></i><span class="cart-count">0</span></a>
+      <button class="hamburger" id="ham-btn"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="mob-nav" id="mob-nav"><div class="mob-backdrop" id="mob-back"></div><div class="mob-drawer" id="mob-drawer"></div></div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <span class="page-eyebrow">Commande</span>
+    <h1 class="page-title">Mon Panier</h1>
+  </div>
+</div>
+
+<div class="cart-section" id="cart-section"></div>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:14px"><div class="logo-icon" style="width:32px;height:32px;font-size:15px">&#x1FAA1;</div><span class="logo-text">KALY<span>.</span></span></div>
+      <p>Vetements et accessoires africains cousus avec passion.</p>
+      <div class="social-row">
+        <a href="https://www.instagram.com/ly.s_clothing_empire_" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/@kaly.125" target="_blank" class="social-btn"><i class="fab fa-tiktok"></i></a>
+        <a href="https://wa.me/22379747424" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Navigation</h4><a href="index.html">Accueil</a><a href="products.html">Produits</a><a href="cart.html">Panier</a></div>
+    <div class="footer-col"><h4>Categories</h4><a href="products.html?category=vetements">Vetements</a><a href="products.html?category=sacs">Sacs</a><a href="products.html?category=chaussures">Chaussures</a><a href="products.html?category=accessoires">Accessoires</a></div>
+    <div class="footer-col"><h4>Contact</h4><p><i class="fas fa-phone" style="margin-right:6px;color:var(--rose)"></i>+233 054 378 5331</p><p><i class="fab fa-whatsapp" style="margin-right:6px;color:var(--green)"></i>+223 79 74 74 24</p></div>
+  </div>
+  <div class="footer-bottom"><p>2025 KALY. Tous droits reserves.</p><p>Fait avec amour en Afrique</p></div>
+</footer>
+
+<script>
+var API='https://kaly-backend.onrender.com/api';
+var discount=0;
+
+function getUser(){try{return JSON.parse(localStorage.getItem('kaly_user'));}catch(e){return null;}}
+function getInitials(s){if(!s)return '?';return s.trim().split(' ').map(function(w){return w[0]||'';}).slice(0,2).join('').toUpperCase();}
+function logout(){localStorage.removeItem('kaly_user');localStorage.removeItem('kaly_token');showToast('Deconnecte','success');setTimeout(renderAuth,120);}
+function closeMob(){document.getElementById('mob-nav').classList.remove('open');document.body.style.overflow='';}
+function renderAuth(){
+  var user=getUser();var area=document.getElementById('auth-area');var drawer=document.getElementById('mob-drawer');if(!area)return;
+  if(user){
+    var init=getInitials(user.name||user.username||user.email||'');var name=user.name||user.username||'Mon compte';var email=user.email||'';
+    area.innerHTML='<div class="user-menu"><div class="user-trigger" id="utrig"><div class="user-avatar">'+init+'</div><span class="user-name">'+name+'</span><i class="fas fa-chevron-down" style="color:rgba(255,255,255,.4);font-size:.65rem"></i></div><div class="user-dropdown" id="udrop"><div class="dd-header"><div class="dd-greet">Connecte en tant que</div><div class="dd-name">'+name+'</div></div><a href="account.html" class="dd-item"><i class="fas fa-user"></i> Mon profil</a><div class="dd-divider"></div><button class="dd-item logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Deconnexion</button></div></div>';
+    var trig=document.getElementById('utrig');var drop=document.getElementById('udrop');
+    if(trig&&drop){trig.addEventListener('click',function(e){e.stopPropagation();drop.classList.toggle('open');});document.addEventListener('click',function(){drop.classList.remove('open');});}
+    if(drawer){drawer.innerHTML='<div class="mob-user-card"><div class="mob-avatar">'+init+'</div><div><div class="mob-uname">'+name+'</div><div class="mob-uemail">'+email+'</div></div></div><a href="index.html" onclick="closeMob()"><i class="fas fa-home"></i> Accueil</a><a href="products.html" onclick="closeMob()"><i class="fas fa-th-large"></i> Produits</a><div class="mob-divider"></div><button onclick="logout();closeMob()"><i class="fas fa-sign-out-alt" style="color:#f87171"></i><span style="color:#f87171">Deconnexion</span></button>';}
+  } else {
+    area.innerHTML='<a href="login.html" class="btn-login">Connexion</a><a href="register.html" class="btn-signup">S\'inscrire</a>';
+    if(drawer){drawer.innerHTML='<div class="mob-auth"><a href="login.html" class="mob-login"><i class="fas fa-sign-in-alt"></i> Connexion</a><a href="register.html" class="mob-register"><i class="fas fa-user-plus"></i> S\'inscrire</a></div><div class="mob-divider"></div><a href="index.html" onclick="closeMob()"><i class="fas fa-home"></i> Accueil</a><a href="products.html" onclick="closeMob()"><i class="fas fa-th-large"></i> Produits</a>';}
+  }
+}
+function getCart(){try{return JSON.parse(localStorage.getItem('kaly_cart'))||[];}catch(e){return[];}}
+function saveCart(cart){localStorage.setItem('kaly_cart',JSON.stringify(cart));updateCartCount();renderCart();}
+function updateCartCount(){var n=getCart().reduce(function(s,i){return s+i.quantity;},0);document.querySelectorAll('.cart-count').forEach(function(el){el.textContent=n;});}
+function removeItem(id){var cart=getCart().filter(function(i){return i._id!==id;});saveCart(cart);showToast('Article retire','success');}
+function changeQty(id,delta){
+  var cart=getCart();
+  for(var i=0;i<cart.length;i++){if(cart[i]._id===id){cart[i].quantity+=delta;if(cart[i].quantity<=0){cart.splice(i,1);}break;}}
+  saveCart(cart);
+}
+function applyPromo(){
+  var code=document.getElementById('promo-code').value.trim().toUpperCase();
+  var msg=document.getElementById('promo-msg');
+  var promos={'KALY10':10,'KALY20':20,'PROMO15':15};
+  if(promos[code]){
+    discount=promos[code];
+    msg.className='promo-msg ok';msg.textContent='Code applique! -'+discount+'% de reduction';
+  } else {
+    discount=0;msg.className='promo-msg err';msg.textContent='Code invalide';
+  }
+  renderSummary();
+}
+function renderSummary(){
+  var cart=getCart();
+  var subtotal=cart.reduce(function(s,i){return s+i.price*i.quantity;},0);
+  var disc=Math.round(subtotal*discount/100);
+  var total=subtotal-disc;
+  var el=document.getElementById('summary-body');
+  if(!el)return;
+  var discRow=discount>0?'<div class="summary-row discount-row"><span>Reduction ('+discount+'%)</span><span>-'+disc.toLocaleString()+' FCFA</span></div>':'';
+  el.innerHTML='<div class="summary-row"><span>Sous-total</span><span>'+subtotal.toLocaleString()+' FCFA</span></div>'+discRow+'<div class="summary-row"><span>Livraison</span><span style="color:var(--green);font-weight:600">A negocier</span></div><div class="summary-row total"><span>Total</span><span>'+total.toLocaleString()+' FCFA</span></div>';
+}
+function buildWaMessage(){
+  var cart=getCart();
+  var lines=cart.map(function(i){return i.quantity+'x '+i.name+' - '+i.price.toLocaleString()+' FCFA';});
+  var subtotal=cart.reduce(function(s,i){return s+i.price*i.quantity;},0);
+  var disc=Math.round(subtotal*discount/100);
+  var total=subtotal-disc;
+  var msg='Bonjour KALY! Je veux commander:\n\n'+lines.join('\n')+'\n\nSous-total: '+subtotal.toLocaleString()+' FCFA'+(discount?'\nReduction (-'+discount+'%): -'+disc.toLocaleString()+' FCFA':'')+'\nTOTAL: '+total.toLocaleString()+' FCFA\n\nMerci!';
+  return encodeURIComponent(msg);
+}
+function renderCart(){
+  var cart=getCart();
+  var section=document.getElementById('cart-section');
+  if(!cart.length){
+    section.innerHTML='<div class="empty-cart"><span class="empty-cart-icon"><i class="fas fa-shopping-bag"></i></span><h2>Votre panier est vide</h2><p>Decouvrez nos produits et ajoutez vos favoris!</p><a href="products.html" class="btn-shop"><i class="fas fa-th-large"></i> Voir les Produits</a></div>';
+    return;
+  }
+  var items='';
+  for(var i=0;i<cart.length;i++){
+    var item=cart[i];
+    var img=item.image||'https://via.placeholder.com/80x80?text=KALY';
+    items+='<div class="cart-item"><img class="cart-item-img" src="'+img+'" alt="'+item.name+'"><div class="cart-item-info"><div class="cart-item-name">'+item.name+'</div><div class="cart-item-price">'+item.price.toLocaleString()+' FCFA</div><div class="qty-row"><button class="qty-btn" onclick="changeQty(\''+item._id+'\',-1)"><i class="fas fa-minus"></i></button><span class="qty-num">'+item.quantity+'</span><button class="qty-btn" onclick="changeQty(\''+item._id+'\',1)"><i class="fas fa-plus"></i></button></div></div><button class="remove-btn" onclick="removeItem(\''+item._id+'\')"><i class="fas fa-trash"></i></button></div>';
+  }
+  section.innerHTML='<div class="cart-layout"><div class="cart-items">'+items+'</div><div class="cart-summary"><div class="summary-title">Recapitulatif</div><div class="promo-wrap"><span class="promo-label">Code promo</span><div class="promo-input-row"><input type="text" id="promo-code" placeholder="Ex: KALY10"><button class="promo-btn" onclick="applyPromo()">Appliquer</button></div><div class="promo-msg" id="promo-msg"></div></div><div id="summary-body"></div><a href="https://wa.me/22379747424?text='+buildWaMessage()+'" target="_blank" class="btn-wa"><i class="fab fa-whatsapp" style="font-size:1.2rem"></i> Commander sur WhatsApp</a><a href="products.html" class="btn-continue"><i class="fas fa-arrow-left"></i> Continuer mes achats</a></div></div>';
+  renderSummary();
+}
+function showToast(msg,type){var t=document.createElement('div');t.className='toast '+(type||'success');t.innerHTML='<i class="fas fa-'+(type==='success'?'check-circle':'exclamation-circle')+'"></i> '+msg;document.body.appendChild(t);setTimeout(function(){t.style.cssText='opacity:0;transform:translateY(14px);transition:all .3s';setTimeout(function(){if(t.parentNode)t.remove();},300);},2800);}
+document.getElementById('ham-btn').addEventListener('click',function(){document.getElementById('mob-nav').classList.add('open');document.body.style.overflow='hidden';});
+document.getElementById('mob-back').addEventListener('click',closeMob);
+window.addEventListener('storage',function(e){if(e.key==='kaly_user'||e.key==='kaly_token')renderAuth();});
+renderAuth();updateCartCount();renderCart();
+</script>
+</body>
+</html>
