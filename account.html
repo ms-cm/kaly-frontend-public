@@ -205,11 +205,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--soft);color:var(--dark);o
         <div class="form-grid">
           <div class="fg full"><label>Nom complet</label><input type="text" id="f-name" placeholder="Votre nom"></div>
           <div class="fg full"><label>Email</label><input type="email" id="f-email" placeholder="votre@email.com" disabled></div>
+          <div class="fg full"><label>Numero WhatsApp</label><input type="tel" id="f-phone" placeholder="+223 79 74 74 24"></div>
         </div>
         <div class="form-msg" id="info-msg"></div>
         <div style="display:flex;justify-content:flex-end;margin-top:18px">
           <button class="btn btn-primary" id="save-info-btn" onclick="saveInfo()"><div class="sp"></div><span class="lbl"><i class="fas fa-save"></i> Sauvegarder</span></button>
         </div>
+      </div>
+
+      <!-- DELETE ACCOUNT -->
+      <div class="card" style="border-color:rgba(239,68,68,.2)">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <div style="width:36px;height:36px;border-radius:9px;background:rgba(239,68,68,.1);display:flex;align-items:center;justify-content:center;color:#dc2626;font-size:.9rem;flex-shrink:0"><i class="fas fa-exclamation-triangle"></i></div>
+          <div><div style="font-weight:700;font-size:.95rem;color:#dc2626">Zone dangereuse</div><div style="font-size:.8rem;color:var(--muted)">Cette action est irreversible</div></div>
+        </div>
+        <p style="font-size:.86rem;color:var(--muted);margin-bottom:16px;line-height:1.6">La suppression de votre compte effacera definitivement toutes vos donnees. Cette action ne peut pas etre annulee.</p>
+        <button class="btn btn-danger" onclick="confirmDeleteAccount()"><i class="fas fa-trash"></i> Supprimer mon compte</button>
       </div>
     </div>
 
@@ -245,162 +256,4 @@ body{font-family:'DM Sans',sans-serif;background:var(--soft);color:var(--dark);o
       <p>Vetements et accessoires africains cousus avec passion.</p>
       <div class="social-row">
         <a href="https://www.instagram.com/ly.s_clothing_empire_" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.tiktok.com/@kaly.125" target="_blank" class="social-btn"><i class="fab fa-tiktok"></i></a>
-        <a href="https://wa.me/22379747424" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
-      </div>
-    </div>
-    <div class="footer-col"><h4>Navigation</h4><a href="index.html">Accueil</a><a href="products.html">Produits</a><a href="cart.html">Panier</a></div>
-    <div class="footer-col"><h4>Categories</h4><a href="products.html?category=vetements">Vetements</a><a href="products.html?category=sacs">Sacs</a><a href="products.html?category=chaussures">Chaussures</a><a href="products.html?category=accessoires">Accessoires</a></div>
-    <div class="footer-col"><h4>Contact</h4><p><i class="fas fa-phone" style="margin-right:6px;color:var(--rose)"></i>+233 054 378 5331</p><p><i class="fab fa-whatsapp" style="margin-right:6px;color:var(--green)"></i>+223 79 74 74 24</p></div>
-  </div>
-  <div class="footer-bottom"><p>2025 KALY. Tous droits reserves.</p><p>Fait avec amour en Afrique</p></div>
-</footer>
-
-<script>
-var API = 'https://kaly-backend.onrender.com/api';
-
-/* AUTH */
-function getUser(){try{return JSON.parse(localStorage.getItem('kaly_user'));}catch(e){return null;}}
-function getToken(){return localStorage.getItem('kaly_token')||'';}
-function getInitials(s){if(!s)return '?';return s.trim().split(' ').map(function(w){return w[0]||'';}).slice(0,2).join('').toUpperCase();}
-function logout(){localStorage.removeItem('kaly_user');localStorage.removeItem('kaly_token');window.location.href='index.html';}
-function closeMob(){document.getElementById('mob-nav').classList.remove('open');document.body.style.overflow='';}
-
-function renderAuth(){
-  var user=getUser();var area=document.getElementById('auth-area');var drawer=document.getElementById('mob-drawer');if(!area)return;
-  if(user){
-    var init=getInitials(user.name||user.username||user.email||'');var name=user.name||user.username||'Mon compte';var email=user.email||'';
-    area.innerHTML='<div class="user-menu"><div class="user-trigger" id="utrig"><div class="user-avatar">'+init+'</div><span class="user-name">'+name+'</span><i class="fas fa-chevron-down" style="color:rgba(255,255,255,.4);font-size:.65rem"></i></div><div class="user-dropdown" id="udrop"><div class="dd-header"><div class="dd-greet">Connecte en tant que</div><div class="dd-name">'+name+'</div></div><a href="account.html" class="dd-item"><i class="fas fa-user"></i> Mon profil</a><a href="orders.html" class="dd-item"><i class="fas fa-box"></i> Mes commandes</a><div class="dd-divider"></div><button class="dd-item logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Deconnexion</button></div></div>';
-    var trig=document.getElementById('utrig');var drop=document.getElementById('udrop');
-    if(trig&&drop){trig.addEventListener('click',function(e){e.stopPropagation();drop.classList.toggle('open');});document.addEventListener('click',function(){drop.classList.remove('open');});}
-    if(drawer){drawer.innerHTML='<div class="mob-user-card"><div class="mob-avatar">'+init+'</div><div><div class="mob-uname">'+name+'</div><div class="mob-uemail">'+email+'</div></div></div><a href="index.html" onclick="closeMob()"><i class="fas fa-home"></i> Accueil</a><a href="products.html" onclick="closeMob()"><i class="fas fa-th-large"></i> Produits</a><a href="cart.html" onclick="closeMob()"><i class="fas fa-shopping-bag"></i> Panier</a><div class="mob-divider"></div><a href="account.html" onclick="closeMob()"><i class="fas fa-user"></i> Mon profil</a><a href="orders.html" onclick="closeMob()"><i class="fas fa-box"></i> Mes commandes</a><div class="mob-divider"></div><button onclick="logout()"><i class="fas fa-sign-out-alt" style="color:#f87171"></i><span style="color:#f87171">Deconnexion</span></button>';}
-  } else {
-    window.location.href = 'login.html?redirect=account.html';
-  }
-}
-
-/* CART */
-function getCart(){try{return JSON.parse(localStorage.getItem('kaly_cart'))||[];}catch(e){return[];}}
-function updateCartCount(){var n=getCart().reduce(function(s,i){return s+i.quantity;},0);document.querySelectorAll('.cart-count').forEach(function(el){el.textContent=n;});}
-
-/* PANELS */
-function showPanel(name){
-  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
-  document.querySelectorAll('.tab-item').forEach(function(t){t.classList.remove('active');});
-  var panel = document.getElementById('panel-'+name);
-  if(panel) panel.classList.add('active');
-  event.currentTarget.classList.add('active');
-  if(name==='cart') renderCartPanel();
-}
-
-/* LOAD PROFILE */
-function loadProfile(){
-  var user = getUser();
-  if(!user) return;
-  var name  = user.name || user.fullName || user.username || '';
-  var email = user.email || '';
-  var init  = getInitials(name || email);
-  document.getElementById('hero-avatar').textContent = init;
-  document.getElementById('hero-name').textContent   = name || 'Mon Profil';
-  document.getElementById('hero-email').textContent  = email;
-  document.getElementById('f-name').value  = name;
-  document.getElementById('f-email').value = email;
-  /* Cart count */
-  var cart = getCart();
-  var total = cart.reduce(function(s,i){return s+i.quantity;},0);
-  document.getElementById('stat-cart').textContent = total;
-  /* Member since */
-  if(user.createdAt){
-    var d = new Date(user.createdAt);
-    document.getElementById('stat-member').textContent = d.toLocaleDateString('fr-FR',{month:'short',year:'numeric'});
-  }
-}
-
-/* SAVE INFO */
-async function saveInfo(){
-  var btn  = document.getElementById('save-info-btn');
-  var name = document.getElementById('f-name').value.trim();
-  var msg  = document.getElementById('info-msg');
-  if(!name){ showMsg(msg,'Le nom est requis','err'); return; }
-  btn.disabled=true; btn.classList.add('loading');
-  try{
-    /* Update local storage */
-    var user = getUser();
-    user.name = name; user.fullName = name;
-    localStorage.setItem('kaly_user', JSON.stringify(user));
-    document.getElementById('hero-name').textContent = name;
-    document.getElementById('hero-avatar').textContent = getInitials(name);
-    showMsg(msg,'Profil mis a jour avec succes!','ok');
-    renderAuth();
-  } catch(e){ showMsg(msg,'Erreur de sauvegarde','err'); }
-  finally{ btn.disabled=false; btn.classList.remove('loading'); }
-}
-
-/* SAVE PASSWORD */
-async function savePwd(){
-  var btn     = document.getElementById('save-pwd-btn');
-  var oldPwd  = document.getElementById('f-old-pwd').value;
-  var newPwd  = document.getElementById('f-new-pwd').value;
-  var confirm = document.getElementById('f-confirm-pwd').value;
-  var msg     = document.getElementById('pwd-msg');
-  if(!oldPwd||!newPwd){ showMsg(msg,'Remplissez tous les champs','err'); return; }
-  if(newPwd!==confirm){ showMsg(msg,'Les mots de passe ne correspondent pas','err'); return; }
-  if(newPwd.length<6){ showMsg(msg,'Le mot de passe doit faire au moins 6 caracteres','err'); return; }
-  btn.disabled=true; btn.classList.add('loading');
-  try{
-    /* Call API to change password */
-    var token = getToken();
-    var res = await fetch(API+'/auth/change-password',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
-      body:JSON.stringify({oldPassword:oldPwd,newPassword:newPwd})
-    });
-    if(res.ok){
-      showMsg(msg,'Mot de passe mis a jour!','ok');
-      document.getElementById('f-old-pwd').value='';
-      document.getElementById('f-new-pwd').value='';
-      document.getElementById('f-confirm-pwd').value='';
-    } else {
-      var d = await res.json();
-      showMsg(msg,d.error||'Erreur','err');
-    }
-  } catch(e){ showMsg(msg,'Erreur serveur','err'); }
-  finally{ btn.disabled=false; btn.classList.remove('loading'); }
-}
-
-/* CART PANEL */
-function renderCartPanel(){
-  var cart = getCart();
-  var el = document.getElementById('cart-content');
-  if(!cart.length){
-    el.innerHTML='<div class="empty-box"><i class="fas fa-shopping-bag"></i><h3>Panier vide</h3><p>Vous n\'avez pas encore d\'articles.</p><a href="products.html" style="display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:linear-gradient(135deg,var(--rose-deep),var(--gold));color:#fff;border-radius:10px;text-decoration:none;font-weight:600;font-size:.9rem"><i class="fas fa-th-large"></i> Voir les produits</a></div>';
-    return;
-  }
-  var total = cart.reduce(function(s,i){return s+i.price*i.quantity;},0);
-  var items = cart.map(function(i){
-    var img = i.image||'https://via.placeholder.com/56';
-    return '<div class="cart-row"><img src="'+img+'" alt="'+i.name+'"><div class="cart-row-info"><div class="cart-row-name">'+i.name+'</div><div class="cart-row-price">'+i.price.toLocaleString()+' FCFA</div><div class="cart-row-qty">Quantite: '+i.quantity+'</div></div></div>';
-  }).join('');
-  el.innerHTML='<div class="cart-list">'+items+'</div>'+
-    '<div style="background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,.06);padding:18px;margin-top:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">'+
-    '<div><div style="font-size:.8rem;color:var(--muted)">Total panier</div><div style="font-family:\'Cormorant Garamond\',serif;font-size:1.6rem;font-weight:700;color:var(--rose-deep)">'+total.toLocaleString()+' FCFA</div></div>'+
-    '<a href="cart.html" style="display:inline-flex;align-items:center;gap:8px;padding:12px 22px;background:linear-gradient(135deg,var(--rose-deep),var(--gold));color:#fff;border-radius:10px;text-decoration:none;font-weight:600;font-size:.9rem"><i class="fas fa-shopping-bag"></i> Voir le panier</a>'+
-    '</div>';
-}
-
-function showMsg(el, msg, type){
-  el.textContent = msg;
-  el.className = 'form-msg show '+(type==='ok'?'ok':'err');
-  setTimeout(function(){ el.classList.remove('show'); }, 4000);
-}
-
-function showToast(msg,type){var t=document.createElement('div');t.className='toast '+(type||'success');t.innerHTML='<i class="fas fa-'+(type==='success'?'check-circle':'exclamation-circle')+'"></i> '+msg;document.body.appendChild(t);setTimeout(function(){t.style.cssText='opacity:0;transform:translateY(14px);transition:all .3s';setTimeout(function(){if(t.parentNode)t.remove();},300);},2800);}
-
-document.getElementById('ham-btn').addEventListener('click',function(){document.getElementById('mob-nav').classList.add('open');document.body.style.overflow='hidden';});
-document.getElementById('mob-back').addEventListener('click',closeMob);
-window.addEventListener('storage',function(e){if(e.key==='kaly_user'||e.key==='kaly_token')renderAuth();});
-
-renderAuth(); updateCartCount(); loadProfile();
-</script>
-</body>
-</html>
+        <a href="https://www.tiktok.com/@kaly.125" target="_blank" class="social-btn"
