@@ -275,6 +275,14 @@
     </div>
 
     <div class="field">
+      <label>Numero WhatsApp <span style="color:rgba(255,255,255,.3);font-weight:400;font-size:.75rem">(optionnel)</span></label>
+      <div class="input-wrap">
+        <i class="icon fas fa-phone"></i>
+        <input type="tel" id="regPhone" placeholder="+XXX XX XX XX XX" autocomplete="tel"/>
+      </div>
+    </div>
+
+    <div class="field">
       <label>Mot de passe</label>
       <div class="input-wrap">
         <i class="icon fas fa-lock"></i>
@@ -344,6 +352,7 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
   const errorTxt = document.getElementById('errorText');
   const name     = document.getElementById('regName').value.trim();
   const email    = document.getElementById('regEmail').value.trim();
+  const phone    = document.getElementById('regPhone').value.trim();
   const password = document.getElementById('regPass').value;
   const terms    = document.getElementById('terms').checked;
 
@@ -369,7 +378,7 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
     const res  = await fetch(`${API_URL}/auth/register`, {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ fullName: name, email, password })
+      body: JSON.stringify({ fullName: name, email, password, phone })
     });
     const data = await res.json();
 
